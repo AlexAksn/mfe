@@ -19,13 +19,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Configure AWS credentials from Test account
+      - name: Install Packages
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
 
-      - name: Copy files to the test website with the AWS CLI
+      - name: Copy files to the website with the AWS CLI
         run: |
           aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME}}/container/latest
